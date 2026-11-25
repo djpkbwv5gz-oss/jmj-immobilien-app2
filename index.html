@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="de">
 <head>
@@ -89,42 +90,47 @@ small,p {
 }
 </style>
 
+<script>
+window.OneSignalDeferred = window.OneSignalDeferred || [];
+</script>
 <script
  src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
  defer>
 </script>
 
 <script>
-window.OneSignalDeferred = window.OneSignalDeferred || [];
-
 OneSignalDeferred.push(async function(OneSignal) {
  const status = document.getElementById("status");
 
  try {
   await OneSignal.init({
-   appId:"db856c4e-65ff-482e-a05a-b7e6a1596b00",
-   serviceWorkerPath:"/jmj-immobilien-app2/OneSignalSDKWorker.js",
-   serviceWorkerParam:{
-    scope:"/jmj-immobilien-app2/"
-   }
+   appId: "db856c4e-65ff-482e-a05a-b7e6a1596b00",
+
+   serviceWorkerPath:
+    "/jmj-immobilien-app2/OneSignalSDKWorker.js",
+
+   serviceWorkerParam: {
+    scope: "/jmj-immobilien-app2/"
+   },
+
+   serviceWorkerOverrideForTypical: true
   });
 
   window.JMJOneSignal = OneSignal;
 
-  if(status) {
+  if (status) {
    status.textContent = "OneSignal ist bereit.";
   }
 
  } catch(error) {
-  console.error("OneSignal Fehler:",error);
+  console.error("OneSignal Fehler:", error);
 
-  if(status) {
-   status.textContent = "Fehler beim Laden: " + error.message;
+  if (status) {
+   status.textContent = "OneSignal-Fehler: " + error.message;
   }
  }
 });
 </script>
-
 </head>
 
 <body>
@@ -165,20 +171,29 @@ document.getElementById("enable").addEventListener("click", async function() {
 
  try {
   button.disabled = true;
-  status.textContent = "Benachrichtigungen werden aktiviert ...";
 
-  if(!window.JMJOneSignal) {
-   throw new Error("OneSignal ist noch nicht bereit. Bitte lade die App neu.");
+  if (!window.JMJOneSignal) {
+   throw new Error(
+    "OneSignal ist noch nicht bereit. Bitte lade die App neu."
+   );
   }
 
-  await window.JMJOneSignal.Notifications.requestPermission();
+  status.textContent = "Mitteilungsberechtigung wird geprüft ...";
 
-  status.textContent =
-   "Mitteilungsberechtigung wurde angefragt. Bitte prüfe iPadOS.";
+  const granted =
+   await window.JMJOneSignal.Notifications.requestPermission();
+
+  if (granted) {
+   status.textContent =
+    "Berechtigung erteilt. OneSignal verarbeitet die Anmeldung.";
+  } else {
+   status.textContent =
+    "Keine Mitteilungsberechtigung erteilt. Bitte prüfe iPadOS.";
+  }
 
  } catch(error) {
   status.textContent = "Fehler: " + error.message;
-  console.error(error);
+  console.error("Push-Fehler:", error);
 
  } finally {
   button.disabled = false;
