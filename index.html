@@ -1,98 +1,18 @@
 <!doctype html>
-<html lang="de">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#080808">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="JMJ Immobilien">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="icon-192.png">
-<title>JMJ Immobilien</title>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080808"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="JMJ Immobilien"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-192.png"><title>JMJ Immobilien</title>
 <style>
-:root{--gold:#d4af62;--bg:#080808;--panel:#171717;--muted:#a7a7a7}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-main{max-width:680px;margin:auto;padding:24px 18px 48px}
-header{text-align:center;padding:24px 0 18px;border-bottom:1px solid #5b4824}
-.logo{font-size:48px;font-weight:800;letter-spacing:4px;color:var(--gold)}
-.brand{font-size:17px;letter-spacing:5px;font-weight:700}
-.tag{font-size:10px;letter-spacing:2px;color:var(--gold);margin-top:8px}
-.panel{background:var(--panel);border:1px solid #3d321d;border-radius:18px;padding:18px;margin-top:18px}
-h2{font-size:15px;color:var(--gold);letter-spacing:1.5px;margin:0 0 16px}
-label{display:block;font-size:14px;margin:14px 0 7px;color:#eee}
-input,select{width:100%;padding:13px;border:1px solid #514326;border-radius:11px;background:#0d0d0d;color:#fff;font-size:16px}
-button{width:100%;padding:15px;border:0;border-radius:12px;font-size:15px;font-weight:750;margin-top:13px}
-.primary{background:var(--gold);color:#090909}.secondary{background:transparent;color:var(--gold);border:1px solid var(--gold)}
-small,.hint{color:var(--muted);line-height:1.5}
-#status{color:var(--gold);text-align:center;margin:18px 0 8px;min-height:24px}
-.sale{font-size:30px;font-weight:800;color:var(--gold);text-align:center;padding:12px 0}
-#feed{display:grid;gap:10px}.item{padding:12px;border-radius:10px;background:#101010;border:1px solid #302818}
-footer{text-align:center;font-size:12px;color:#999;margin:22px 0}
+:root{--g:#d4af62}*{box-sizing:border-box}body{margin:0;background:#080808;color:white;font-family:-apple-system,sans-serif}main{max-width:650px;margin:auto;padding:24px 18px}header{text-align:center;padding:25px;border-bottom:1px solid #594824}.logo{font-size:48px;font-weight:800;color:var(--g);letter-spacing:4px}.brand{letter-spacing:5px;font-weight:bold}.tag{color:var(--g);font-size:10px;letter-spacing:2px;margin-top:8px}.panel{background:#171717;border:1px solid #45371e;border-radius:18px;padding:18px;margin-top:18px}h2{font-size:15px;color:var(--g)}button{width:100%;padding:15px;border:0;border-radius:12px;background:var(--g);font-weight:bold;margin:12px 0}small,p{color:#aaa;line-height:1.5}
 </style>
-</head>
-<body>
-<main>
-<header>
- <div class="logo">JMJ</div><div class="brand">IMMOBILIEN</div>
- <div class="tag">VIRTUELLE VERKAUFSSIMULATION</div>
-</header>
-<section class="panel">
- <h2>SIMULATION</h2>
- <div class="sale" id="latest">Noch kein virtueller Verkauf</div>
- <label for="interval">Intervall</label>
- <select id="interval">
-  <option value="1">1 Minute (Test)</option><option value="5">5 Minuten</option>
-  <option value="10">10 Minuten</option><option value="15" selected>15 Minuten</option>
-  <option value="20">20 Minuten</option><option value="30">30 Minuten</option>
-  <option value="60">60 Minuten</option><option value="120">120 Minuten</option>
- </select>
- <label for="minimum">Mindestpreis (€)</label><input id="minimum" type="number" min="1" step="1000" value="150000">
- <label for="maximum">Höchstpreis (€)</label><input id="maximum" type="number" min="1" step="1000" value="650000">
- <label for="custom">Eigener Benachrichtigungstext</label><input id="custom" maxlength="120" value="Ein neues Immobiliengeschäft wurde abgeschlossen!">
- <button class="primary" id="start">SIMULATION STARTEN</button>
- <button class="secondary" id="stop">SIMULATION STOPPEN</button>
- <div id="status" role="status">Bereit – alle Verkäufe sind virtuell.</div>
- <p class="hint">Die Simulation läuft, solange diese App geöffnet bleibt. Wird sie geschlossen oder das iPad gesperrt, kann der Timer pausieren.</p>
-</section>
-<section class="panel">
- <h2>LETZTE VIRTUELLE VERKÄUFE</h2>
- <div id="feed"><small>Noch keine Einträge.</small></div>
-</section>
-<footer>JMJ Immobilien · Nur Simulation · Kein echter Verkauf und keine echten Einnahmen</footer>
-</main>
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
-let timer=null, count=0;
-const $=id=>document.getElementById(id);
-const euro=n=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n);
-function sale(){
- const min=Math.floor(Number($('minimum').value)), max=Math.floor(Number($('maximum').value));
- if(!Number.isFinite(min)||!Number.isFinite(max)||min<1||max<=min){$('status').textContent='Bitte prüfe Mindest- und Höchstpreis.';return;}
- const price=Math.floor(Math.random()*(max-min+1))+min;
- const msg=$('custom').value.trim()||'Ein neues Immobiliengeschäft wurde abgeschlossen!';
- const time=new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
- $('latest').textContent=euro(price);
- const item=document.createElement('div');item.className='item';
- const strong=document.createElement('strong');strong.textContent=euro(price)+' · '+time;
- const text=document.createElement('div');text.textContent=msg+' (Simulation)';
- item.append(strong,text);$('feed').prepend(item);
- while($('feed').children.length>12)$('feed').lastElementChild.remove();
- count++;$('status').textContent='Virtueller Verkauf Nr. '+count+' erstellt.';
-}
-$('start').addEventListener('click',()=>{
- if(timer)clearInterval(timer);
- sale();
- const ms=Number($('interval').value)*60000;
- timer=setInterval(sale,ms);
- $('status').textContent='Simulation läuft. Erster Eintrag wurde erstellt.';
+window.OneSignalDeferred=window.OneSignalDeferred||[];
+OneSignalDeferred.push(async function(OneSignal){
+ await OneSignal.init({appId:"HIER_ONESIGNAL_APP_ID_EINTRAGEN",serviceWorkerPath:"OneSignalSDKWorker.js",serviceWorkerParam:{scope:"/"}});
 });
-$('stop').addEventListener('click',()=>{
- if(timer)clearInterval(timer);timer=null;
- $('status').textContent='Simulation gestoppt.';
+</script></head><body><main><header><div class="logo">JMJ</div><div class="brand">IMMOBILIEN</div><div class="tag">VIRTUELLE VERKAUFSSIMULATION</div></header>
+<section class="panel"><h2>HINTERGRUND-BENACHRICHTIGUNGEN</h2><p>Aktiviere Push-Mitteilungen, damit JMJ auch bei geschlossener App virtuelle Verkäufe melden kann.</p><button id="enable">PUSH-BENACHRICHTIGUNGEN AKTIVIEREN</button><p id="status">Noch nicht aktiviert.</p><small>Geplant: alle 15 Minuten. Alle Preise sind erfunden und dienen nur der Simulation.</small></section></main>
+<script>
+document.getElementById("enable").addEventListener("click",()=>{
+ OneSignalDeferred.push(async OneSignal=>{await OneSignal.Notifications.requestPermission();document.getElementById("status").textContent="Bitte prüfe die Mitteilungsfreigabe in iPadOS.";});
 });
-if('serviceWorker' in navigator && location.protocol.startsWith('http')){
- navigator.serviceWorker.register('./service-worker.js').catch(()=>{});
-}
-</script>
-</body>
-</html>
+</script></body></html>
