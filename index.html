@@ -20,9 +20,7 @@
   --panel: #171717;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -87,9 +85,7 @@ button {
   cursor: pointer;
 }
 
-button:disabled {
-  opacity: .6;
-}
+button:disabled { opacity: .6; }
 
 p, small {
   color: #aaa;
@@ -210,8 +206,14 @@ document.getElementById("enable").addEventListener("click", async function() {
     const granted =
       await oneSignal.Notifications.requestPermission();
 
+    status.textContent =
+      "Rückgabe: " + granted +
+      " | OneSignal: " + oneSignal.Notifications.permission +
+      " | iPad: " + oneSignal.Notifications.permissionNative +
+      " | Browser: " + Notification.permission;
+
     if (!granted) {
-      throw new Error("Mitteilungsberechtigung fehlt.");
+      return;
     }
 
     status.textContent = "Push-Anmeldung wird gestartet ...";
