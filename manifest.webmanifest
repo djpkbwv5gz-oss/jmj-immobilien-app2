@@ -1,1 +1,23 @@
-importScripts("https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js");
+
+{
+  "name": "JMJ Immobilien",
+  "short_name": "JMJ",
+  "start_url": "/jmj-immobilien-app2/",
+  "scope": "/jmj-immobilien-app2/",
+  "display": "standalone",
+  "background_color": "#080808",
+  "theme_color": "#080808",
+  "icons": [
+    {
+      "src": "/jmj-immobilien-app2/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/jmj-immobilien-app2/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
+
