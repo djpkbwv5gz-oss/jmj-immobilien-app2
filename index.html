@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#080808">
-<meta name="apple-mobile-web-app-capable" content="yes"
+<meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="JMJ Immobilien">
 
 <link rel="manifest" href="./manifest.webmanifest">
@@ -126,10 +126,8 @@ OneSignalDeferred.push(async function(OneSignal) {
   try {
     await OneSignal.init({
       appId: "db856c4e-65ff-482e-a05a-b7e6a1596b00",
-
       serviceWorkerPath:
         "/jmj-immobilien-app2/OneSignalSDKWorker.js",
-
       serviceWorkerParam: {
         scope: "/jmj-immobilien-app2/"
       }
@@ -145,6 +143,55 @@ OneSignalDeferred.push(async function(OneSignal) {
     status.textContent = "Ladefehler: " + error.message;
   }
 });
+</script>
+</head>
+
+<body>
+<main>
+
+<header>
+  <div class="logo">JMJ</div>
+  <div class="brand">IMMOBILIEN</div>
+  <div class="tag">VIRTUELLE VERKAUFSSIMULATION</div>
+</header>
+
+<section class="panel">
+  <h2>HINTERGRUND-BENACHRICHTIGUNGEN</h2>
+
+  <p>
+    Aktiviere Push-Mitteilungen, damit JMJ dich über neue
+    virtuelle Verkäufe informieren kann.
+  </p>
+
+  <button id="enable" disabled>
+    PUSH-BENACHRICHTIGUNGEN AKTIVIEREN
+  </button>
+
+  <p id="status" class="status">
+    OneSignal wird geladen ...
+  </p>
+
+  <small>
+    Alle Preise und Verkäufe sind erfunden und dienen nur der Simulation.
+  </small>
+</section>
+
+<section class="panel">
+  <h2>ÜBER JMJ IMMOBILIEN</h2>
+  <p>
+    Willkommen bei JMJ Immobilien.
+    Diese Anwendung dient einer virtuellen Immobilien-
+    und Verkaufssimulation.
+  </p>
+</section>
+
+<footer>
+  JMJ IMMOBILIEN · VIRTUELLE SIMULATION
+</footer>
+
+</main>
+
+<script>
 document.getElementById("enable").addEventListener("click", async function() {
   const button = this;
   const status = document.getElementById("status");
@@ -177,40 +224,6 @@ document.getElementById("enable").addEventListener("click", async function() {
       "Anmeldung: " + sub.optedIn +
       " | ID: " + (sub.id || "noch keine ID") +
       " | Token: " + (sub.token ? "vorhanden" : "fehlt");
-
-  } catch (error) {
-    status.textContent = "Fehler: " + error.message;
-    console.error(error);
-
-  } finally {
-    button.disabled = false;
-  }
-});
-document.getElementById("enable").addEventListener("click", async function() {
-  const button = this;
-  const status = document.getElementById("status");
-
-  try {
-    button.disabled = true;
-    status.textContent = "Push-Status wird geprüft ...";
-
-    const oneSignal = window.JMJOneSignal;
-
-    if (!oneSignal) {
-      throw new Error("OneSignal ist nicht geladen.");
-    }
-
-    await oneSignal.Notifications.requestPermission();
-
-    const native = oneSignal.Notifications.permissionNative;
-    const permission = oneSignal.Notifications.permission;
-    const subscription = oneSignal.User.PushSubscription;
-
-    status.textContent =
-      "iPadOS: " + native +
-      " | OneSignal: " + permission +
-      " | Anmeldung: " + subscription.optedIn +
-      " | ID: " + (subscription.id || "keine");
 
   } catch (error) {
     console.error("Push-Fehler:", error);
