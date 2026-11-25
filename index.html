@@ -145,56 +145,47 @@ OneSignalDeferred.push(async function(OneSignal) {
     status.textContent = "Ladefehler: " + error.message;
   }
 });
-</script>
-</head>
+document.getElementById("enable").addEventListener("click", async function() {
+  const button = this;
+  const status = document.getElementById("status");
 
-<body>
-<main>
+  try {
+    button.disabled = true;
 
-<header>
-  <div class="logo">JMJ</div>
-  <div class="brand">IMMOBILIEN</div>
-  <div class="tag">VIRTUELLE VERKAUFSSIMULATION</div>
-</header>
+    const oneSignal = window.JMJOneSignal;
 
-<section class="panel">
-  <h2>HINTERGRUND-BENACHRICHTIGUNGEN</h2>
+    if (!oneSignal) {
+      throw new Error("OneSignal ist nicht geladen.");
+    }
 
-  <p>
-    Aktiviere Push-Mitteilungen, damit JMJ dich über neue
-    virtuelle Verkäufe informieren kann.
-  </p>
+    status.textContent = "Berechtigung wird geprüft ...";
 
-  <button id="enable" disabled>
-    PUSH-BENACHRICHTIGUNGEN AKTIVIEREN
-  </button>
+    const granted =
+      await oneSignal.Notifications.requestPermission();
 
-  <p id="status" class="status">
-    OneSignal wird geladen ...
-  </p>
+    if (!granted) {
+      throw new Error("Mitteilungsberechtigung fehlt.");
+    }
 
-  <small>
-    Alle Preise und Verkäufe sind erfunden und dienen nur der Simulation.
-  </small>
-</section>
+    status.textContent = "Push-Anmeldung wird gestartet ...";
 
-<section class="panel">
-  <h2>ÜBER JMJ IMMOBILIEN</h2>
+    await oneSignal.User.PushSubscription.optIn();
 
-  <p>
-    Willkommen bei JMJ Immobilien.
-    Diese Anwendung dient einer virtuellen Immobilien-
-    und Verkaufssimulation.
-  </p>
-</section>
+    const sub = oneSignal.User.PushSubscription;
 
-<footer>
-  JMJ IMMOBILIEN · VIRTUELLE SIMULATION
-</footer>
+    status.textContent =
+      "Anmeldung: " + sub.optedIn +
+      " | ID: " + (sub.id || "noch keine ID") +
+      " | Token: " + (sub.token ? "vorhanden" : "fehlt");
 
-</main>
+  } catch (error) {
+    status.textContent = "Fehler: " + error.message;
+    console.error(error);
 
-<script>
+  } finally {
+    button.disabled = false;
+  }
+});
 document.getElementById("enable").addEventListener("click", async function() {
   const button = this;
   const status = document.getElementById("status");
