@@ -84,6 +84,7 @@ OneSignalDeferred.push(async function(OneSignal) {
  try {
   await OneSignal.init({
    appId:"db856c4e-65ff-482e-a05a-b7e6a1596b00",
+   serviceWorkerOverrideForTypical: true,
    serviceWorkerPath:"/jmj-immobilien-app2/OneSignalSDKWorker.js",
    serviceWorkerParam:{
     scope:"/jmj-immobilien-app2/"
