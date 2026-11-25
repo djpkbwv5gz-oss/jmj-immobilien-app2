@@ -1,0 +1,9 @@
+name = "jmj-immobilien-push"
+main = "cloudflare-worker.js"
+compatibility_date = "2026-11-25"
+[triggers]
+crons = ["*/15 * * * *"]
+[vars]
+MIN_PRICE = "150000"
+MAX_PRICE = "650000"
+MESSAGE = "Ein neues Immobiliengeschäft wurde abgeschlossen!"
