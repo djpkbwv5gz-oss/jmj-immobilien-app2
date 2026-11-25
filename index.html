@@ -1,9 +1,9 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#080808">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="JMJ Immobilien">
@@ -14,121 +14,136 @@
 <title>JMJ Immobilien</title>
 
 <style>
-:root { --g:#d4af62; }
+:root {
+  --gold: #d4af62;
+  --background: #080808;
+  --panel: #171717;
+}
 
-* { box-sizing:border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
- margin:0;
- background:#080808;
- color:white;
- font-family:-apple-system,sans-serif;
+  margin: 0;
+  background: var(--background);
+  color: white;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 main {
- max-width:650px;
- margin:auto;
- padding:24px 18px;
+  max-width: 650px;
+  margin: auto;
+  padding: 24px 18px;
 }
 
 header {
- text-align:center;
- padding:25px;
- border-bottom:1px solid #594824;
+  text-align: center;
+  padding: 25px;
+  border-bottom: 1px solid #594824;
 }
 
 .logo {
- font-size:48px;
- font-weight:800;
- color:var(--g);
- letter-spacing:4px;
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--gold);
+  letter-spacing: 4px;
 }
 
 .brand {
- letter-spacing:5px;
- font-weight:bold;
+  letter-spacing: 5px;
+  font-weight: bold;
 }
 
 .tag {
- color:var(--g);
- font-size:10px;
- letter-spacing:2px;
- margin-top:8px;
+  color: var(--gold);
+  font-size: 10px;
+  letter-spacing: 2px;
+  margin-top: 8px;
 }
 
 .panel {
- background:#171717;
- border:1px solid #45371e;
- border-radius:18px;
- padding:18px;
- margin-top:18px;
+  background: var(--panel);
+  border: 1px solid #45371e;
+  border-radius: 18px;
+  padding: 20px;
+  margin-top: 18px;
 }
 
 h2 {
- font-size:15px;
- color:var(--g);
+  font-size: 15px;
+  color: var(--gold);
 }
 
 button {
- width:100%;
- padding:15px;
- border:0;
- border-radius:12px;
- background:var(--g);
- font-weight:bold;
- margin:12px 0;
- cursor:pointer;
+  width: 100%;
+  padding: 15px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--gold);
+  color: #080808;
+  font-weight: bold;
+  margin: 12px 0;
+  cursor: pointer;
 }
 
 button:disabled {
- opacity:.6;
+  opacity: .6;
 }
 
-small,p {
- color:#aaa;
- line-height:1.5;
+p, small {
+  color: #aaa;
+  line-height: 1.6;
+}
+
+.status {
+  overflow-wrap: anywhere;
+  font-size: 13px;
+}
+
+footer {
+  text-align: center;
+  color: #777;
+  font-size: 11px;
+  padding: 25px 10px;
 }
 </style>
 
 <script>
 window.OneSignalDeferred = window.OneSignalDeferred || [];
 </script>
+
 <script
- src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
- defer>
+  src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
+  defer>
 </script>
 
 <script>
 OneSignalDeferred.push(async function(OneSignal) {
- const status = document.getElementById("status");
+  const status = document.getElementById("status");
+  const button = document.getElementById("enable");
 
- try {
-  await OneSignal.init({
-   appId: "db856c4e-65ff-482e-a05a-b7e6a1596b00",
+  try {
+    await OneSignal.init({
+      appId: "db856c4e-65ff-482e-a05a-b7e6a1596b00",
 
-   serviceWorkerPath:
-    "/jmj-immobilien-app2/OneSignalSDKWorker.js",
+      serviceWorkerPath:
+        "/jmj-immobilien-app2/OneSignalSDKWorker.js",
 
-   serviceWorkerParam: {
-    scope: "/jmj-immobilien-app2/"
-   },
+      serviceWorkerParam: {
+        scope: "/jmj-immobilien-app2/"
+      }
+    });
 
-   serviceWorkerOverrideForTypical: true
-  });
+    window.JMJOneSignal = OneSignal;
 
-  window.JMJOneSignal = OneSignal;
+    status.textContent = "OneSignal ist bereit.";
+    button.disabled = false;
 
-  if (status) {
-   status.textContent = "OneSignal ist bereit.";
+  } catch (error) {
+    console.error("OneSignal Fehler:", error);
+    status.textContent = "Ladefehler: " + error.message;
   }
-
- } catch(error) {
-  console.error("OneSignal Fehler:", error);
-
-  if (status) {
-   status.textContent = "OneSignal-Fehler: " + error.message;
-  }
- }
 });
 </script>
 </head>
@@ -137,67 +152,82 @@ OneSignalDeferred.push(async function(OneSignal) {
 <main>
 
 <header>
- <div class="logo">JMJ</div>
- <div class="brand">IMMOBILIEN</div>
- <div class="tag">VIRTUELLE VERKAUFSSIMULATION</div>
+  <div class="logo">JMJ</div>
+  <div class="brand">IMMOBILIEN</div>
+  <div class="tag">VIRTUELLE VERKAUFSSIMULATION</div>
 </header>
 
 <section class="panel">
- <h2>HINTERGRUND-BENACHRICHTIGUNGEN</h2>
+  <h2>HINTERGRUND-BENACHRICHTIGUNGEN</h2>
 
- <p>
- Aktiviere Push-Mitteilungen, damit JMJ auch bei geschlossener App
- virtuelle Verkäufe melden kann.
- </p>
+  <p>
+    Aktiviere Push-Mitteilungen, damit JMJ dich über neue
+    virtuelle Verkäufe informieren kann.
+  </p>
 
- <button id="enable">
- PUSH-BENACHRICHTIGUNGEN AKTIVIEREN
- </button>
+  <button id="enable" disabled>
+    PUSH-BENACHRICHTIGUNGEN AKTIVIEREN
+  </button>
 
- <p id="status">OneSignal wird geladen ...</p>
+  <p id="status" class="status">
+    OneSignal wird geladen ...
+  </p>
 
- <small>
- Geplant: alle 15 Minuten. Alle Preise sind erfunden
- und dienen nur der Simulation.
- </small>
+  <small>
+    Alle Preise und Verkäufe sind erfunden und dienen nur der Simulation.
+  </small>
 </section>
+
+<section class="panel">
+  <h2>ÜBER JMJ IMMOBILIEN</h2>
+
+  <p>
+    Willkommen bei JMJ Immobilien.
+    Diese Anwendung dient einer virtuellen Immobilien-
+    und Verkaufssimulation.
+  </p>
+</section>
+
+<footer>
+  JMJ IMMOBILIEN · VIRTUELLE SIMULATION
+</footer>
 
 </main>
 
 <script>
 document.getElementById("enable").addEventListener("click", async function() {
- const status = document.getElementById("status");
- const button = this;
+  const button = this;
+  const status = document.getElementById("status");
 
- try {
-  button.disabled = true;
+  try {
+    button.disabled = true;
+    status.textContent = "Push-Status wird geprüft ...";
 
-  if (!window.JMJOneSignal) {
-   throw new Error(
-    "OneSignal ist noch nicht bereit. Bitte lade die App neu."
-   );
+    const oneSignal = window.JMJOneSignal;
+
+    if (!oneSignal) {
+      throw new Error("OneSignal ist nicht geladen.");
+    }
+
+    await oneSignal.Notifications.requestPermission();
+
+    const native = oneSignal.Notifications.permissionNative;
+    const permission = oneSignal.Notifications.permission;
+    const subscription = oneSignal.User.PushSubscription;
+
+    status.textContent =
+      "iPadOS: " + native +
+      " | OneSignal: " + permission +
+      " | Anmeldung: " + subscription.optedIn +
+      " | ID: " + (subscription.id || "keine");
+
+  } catch (error) {
+    console.error("Push-Fehler:", error);
+    status.textContent = "Fehler: " + error.message;
+
+  } finally {
+    button.disabled = false;
   }
-
-  status.textContent = "Mitteilungsberechtigung wird geprüft ...";
-
-  const granted =
-   await window.JMJOneSignal.Notifications.requestPermission();
-
-  if (granted) {
-   status.textContent =
-    "Berechtigung erteilt. OneSignal verarbeitet die Anmeldung.";
-  } else {
-   status.textContent =
-    "Keine Mitteilungsberechtigung erteilt. Bitte prüfe iPadOS.";
-  }
-
- } catch(error) {
-  status.textContent = "Fehler: " + error.message;
-  console.error("Push-Fehler:", error);
-
- } finally {
-  button.disabled = false;
- }
 });
 </script>
 
