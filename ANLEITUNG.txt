@@ -1,0 +1,17 @@
+JMJ IMMOBILIEN – iPad-Web-App
+
+WICHTIG:
+Diese ZIP-Datei enthält die Web-App-Dateien, noch keine installierbare App.
+Für „Zum Home-Bildschirm“ muss die App über eine HTTPS-Adresse bereitgestellt werden.
+Die Simulation läuft nur zuverlässig, solange die Seite geöffnet bleibt. Hintergrund-
+Push-Mitteilungen benötigen einen zusätzlichen Push-Dienst und sind hier nicht enthalten.
+
+Dateien:
+- index.html: App
+- manifest.webmanifest: Home-Bildschirm-/PWA-Einstellungen
+- service-worker.js: Offline-Caching
+- icon-192.png und icon-512.png: App-Symbol
+
+Nächster Schritt:
+Die Dateien müssen auf einen HTTPS-Webhost geladen werden. Danach die HTTPS-Adresse
+in Safari öffnen > Teilen > Zum Home-Bildschirm.
